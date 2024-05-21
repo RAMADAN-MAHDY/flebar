@@ -8,7 +8,7 @@ const DataDisplay = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/condition');
+      const response = await fetch('https://flebarapi-1.onrender.com/condition');
       const result = await response.json();
       setData(result);
     } catch (error) {

@@ -12,7 +12,7 @@ const LoginForm = ({getkey}) => {
     setError("");
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://flebarapi-1.onrender.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

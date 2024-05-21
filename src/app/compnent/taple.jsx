@@ -8,7 +8,7 @@ const DataDisplayTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/condition');
+      const response = await fetch('https://flebarapi-1.onrender.com/condition');
       const result = await response.json();
       setData(result);
     } catch (error) {
@@ -25,7 +25,7 @@ const DataDisplayTable = () => {
       setData(updatedData);
 
       // إرسال طلب لتحديث البيانات في قاعدة البيانات
-      await fetch(`/api/condition/${id}`, {
+      await fetch(`https://flebarapi-1.onrender.com/condition/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

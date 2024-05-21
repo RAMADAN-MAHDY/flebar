@@ -13,7 +13,7 @@ const AddDataForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/condition', {
+      const response = await fetch('https://flebarapi-1.onrender.com/condition', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const AddDataForm = () => {
           <tr>
             <td className="bg-[#9aa31e] text-center text-[#fff] border-[1px] border-[#d1252579]">
               <input
-                type="text"
+                type="number"
                 value={order}
                 onChange={(e) => setOrder(e.target.value)}
                 required
@@ -63,7 +63,7 @@ const AddDataForm = () => {
             </td>
             <td className="text-center border-[2px] border-[#d24e4e80]">
               <input
-                type="text"
+                type="number"
                 value={modelnumber}
                 onChange={(e) => setModelNumber(e.target.value)}
                 required
