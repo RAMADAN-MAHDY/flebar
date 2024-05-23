@@ -7,7 +7,7 @@ const AddDataForm = () => {
   const [modelnumber, setModelNumber] = useState("");
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [condition, setCondition] = useState("القص");
+  const [condition, setCondition] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -95,7 +95,7 @@ const AddDataForm = () => {
                 required
                 className="w-full bg-transparent text-center"
               >
-                <option value="القص" disabled>اختر الحالة</option>
+                <option value="" disabled>اختر الحالة</option>
                 <option value="القص">القص</option>
                 <option value="الظهر">الظهر</option>
                 <option value="الصدر">الصدر</option>
