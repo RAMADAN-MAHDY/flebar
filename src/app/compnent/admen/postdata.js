@@ -43,10 +43,10 @@ const AddDataForm = () => {
       <table className="bg-[#3333] p-6 w-full">
         <thead className="bg-[#4444]">
           <tr className="border-[2px] border-[#f6202044]">
-            <th>أمر</th>
-            <th>الموديل</th>
-            <th>الاسم</th>
-            <th>العدد</th>
+            <th className="text-[#41ff6d] border-[2px] border-[#f6202044]">أمر</th>
+            <th className="text-[#41ff6d] border-[2px] border-[#f6202044]">الموديل</th>
+            <th className="text-[#41ff6d] border-[2px] border-[#f6202044]">الاسم</th>
+            <th className="text-[#41ff6d] border-[2px] border-[#f6202044]">العدد</th>
             <th className="bg-[#5c5ee2]">حالة القصه (مكان القصه الحالي)</th>
           </tr>
         </thead>
