@@ -6,7 +6,7 @@ const  AdmenHome=()=>{
     return (
         <>
         <DataDisplay/>
-        <h3 className='text-center text-[22px] text-[#fff] p-1 mt-6 mr-[100px] bg-[#ac51d0a6] rounded-lg w-[400px]'> اضف قصه جديده من هنا </h3>
+        <h3 className='text-center text-[22px] text-[#fff] p-1 mt-6 md:mr-[100px] bg-[#ac51d0a6] rounded-lg md:w-[400px]'> اضف قصه جديده من هنا </h3>
         <AddDataForm/>
         </>
     )

@@ -39,7 +39,7 @@ const DataDisplay = () => {
         placeholder="ابحث عن طريق الاسم، العدد، الأمر، أو الموديل"
         value={searchQuery}
         onChange={handleSearch}
-        className="mb-2 p-2 border  border-gray-400 rounded-lg mr-[40%]"
+        className="mb-2 p-2 border  border-gray-400 rounded-lg md:mr-[40%]"
       />
 
     

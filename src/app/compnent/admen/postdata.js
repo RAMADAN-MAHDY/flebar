@@ -95,7 +95,7 @@ const AddDataForm = () => {
                 required
                 className="w-full bg-transparent text-center"
               >
-                <option value="" disabled>اختر الحالة</option>
+                <option value="القص" disabled>اختر الحالة</option>
                 <option value="القص">القص</option>
                 <option value="الظهر">الظهر</option>
                 <option value="الصدر">الصدر</option>

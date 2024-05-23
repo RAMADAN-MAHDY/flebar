@@ -11,7 +11,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ar" dir="rtl">
-      <body className={inter.className}>{children}</body>
+      <body  style={{
+    backgroundImage: "url('/_04db2f22-ade1-493e-8710-7b33b7cff431.jpeg')",
+    width: "100%",
+    height:"100%",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover"
+  }} className={inter.className}>{children}</body>
     </html>
   );
 }
