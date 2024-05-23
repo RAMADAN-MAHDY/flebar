@@ -53,7 +53,7 @@ const DataDisplayTable = () => {
   );
 
   return (
-<div className="w-[100%] mr-16">
+<div className="w-[100%] sm:mr-16">
       <input
         type="text"
         placeholder="ابحث عن طريق الاسم، العدد، الأمر، أو الموديل"
