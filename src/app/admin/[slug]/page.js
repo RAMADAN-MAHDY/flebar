@@ -1,29 +1,44 @@
+"use client"
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-export default async function Page({ params }) {
-    const res = await fetch(`https://flebarapi-1.onrender.com/condition/${params.slug}`);
-    if (!res.ok) {
-        console.error('Failed to fetch data items');
-        return <div>Failed to load data items</div>;
-    }
-    const dataitems = await res.json();
+const Page = ({ params }) => {
+    const [dataItems, setDataItems] = useState({});
+    const [details, setDetails] = useState({ conditions: [] });
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const response = await fetch(`https://flebarapi-1.onrender.com/condition/details/${params.slug}`);
-    if (!response.ok) {
-        console.error('Failed to fetch details');
-        return <div>Failed to load details</div>;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch(`https://flebarapi-1.onrender.com/condition/${params.slug}`);
+                if (!res.ok) throw new Error('Failed to fetch data items');
+                const data = await res.json();
+                setDataItems(data);
+
+                const response = await fetch(`https://flebarapi-1.onrender.com/condition/details/${params.slug}`);
+                if (!response.ok) throw new Error('Failed to fetch details');
+                const detailsData = await response.json();
+                setDetails(detailsData);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [params.slug]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
-    const details = await response.json();
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
     const condition = details.conditions || [];
-
-    const renderTableRow = (label, key) => (
-        <tr className="border-[2px] border-[#f6202044]">
-            <td>{label}</td>
-            {condition.map((con, index) => (
-                <td key={index} className="text-[#000000] border-[2px] text-center border-[#f6202044]">{con[key]}</td>
-            ))}
-        </tr>
-    );
 
     return (
         <div>
@@ -40,29 +55,39 @@ export default async function Page({ params }) {
                 </h2>
             </div>
 
-           <div className='flex justify-between'>
+            <div className='flex justify-between'>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">أمر الشغل : {dataItems.order}</h2>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">الموديل : {dataItems.modelnumber}</h2>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">العدد : {dataItems.quantity}</h2>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">الاسم : {dataItems.name}</h2>
+            </div>
 
-           <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">أمر الشغل : {dataitems.order}</h2>
-           <h2 className="text-[rgb(255,28,28)] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">الموديل  : {dataitems.modelnumber}</h2>
-            <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]" >العدد : {dataitems.quantity}</h2>
-            <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]" >الاسم : {dataitems.name}</h2>
-
-           </div>
-          
-            <table className="bg-[#333333] p-6 w-[100%] sm:w-[97%] md:w-[80%]">
+            <table className="bg-[#333333] p-6 w-full sm:w-[97%] md:w-[80%]">
                 <thead className="bg-[#4444]">
-                    <tr className="border-[2px] border-[#f6202044]">
-                        <th className="text-[#41ff6d] border-[2px] border-[#f6202044]">الحاله</th>
+                    <tr className="border-2 border-[#f6202044]">
+                        <th className="text-[#41ff6d] border-2 border-[#f6202044]">الحاله</th>
                         {condition.map((con, index) => (
-                            <th key={index} className="text-[#ff36e1] border-[2px] border-[#f6202044]">{con.condition}</th>
+                            <th key={index} className="text-[#ff36e1] border-2 border-[#f6202044]">{con.condition}</th>
                         ))}
                     </tr>
                 </thead>
-                <tbody className="bg-[#fdfdfd] border-[3px] border-[#f6202044]">
-                    {renderTableRow('الاعداد المستلمه', 'number')}
-                    {renderTableRow('الملاحظات', 'note')}
+                <tbody className="bg-[#fdfdfd] border-3 border-[#f6202044]">
+                    <tr className="border-2 border-[#f6202044]">
+                        <td className="text-[#41ff6d] border-2 border-[#f6202044]">الاعداد المستلمه</td>
+                        {condition.map((con, index) => (
+                            <td key={index} className="text-[#333333] border-2 border-[#f6202044]">{con.number}</td>
+                        ))}
+                    </tr>
+                    <tr className="border-2 border-[#f6202044]">
+                        <td className="text-[#41ff6d] border-2 border-[#f6202044]">الملاحظات</td>
+                        {condition.map((con, index) => (
+                            <td key={index} className="text-[#333333] border-2 border-[#f6202044]">{con.note}</td>
+                        ))}
+                    </tr>
                 </tbody>
             </table>
         </div>
     );
-}
+};
+
+export default Page;
