@@ -1,22 +1,34 @@
-"use client"
-
+"use client";
+import DetailsForm from '@/app/compnent/postdetails';
 import { useEffect, useState } from "react";
 
 const DataDisplayTable = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedCondition, setSelectedCondition] = useState(null);
+  const [shows , setshow] = useState(false);
+  const [loading , setloading] = useState(true)
 
+
+  const showFormdetails = (show)=>{
+    setshow(show);
+
+  }
   const fetchData = async () => {
     try {
       const response = await fetch('https://flebarapi-1.onrender.com/condition');
       const result = await response.json();
       setData(result);
+      setloading(false)
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
   };
 
   const updateCondition = async (id, newCondition) => {
+   setshow(true)
+    
     try {
       // تحديث الحالة محلياً
       const updatedData = data.map(item => 
@@ -32,6 +44,10 @@ const DataDisplayTable = () => {
         },
         body: JSON.stringify({ condition: newCondition }),
       });
+
+      // تعيين الحالة والمعرف المحدد
+      setSelectedOrder(id);
+      setSelectedCondition(newCondition);
     } catch (error) {
       console.error("Error updating condition: ", error);
     }
@@ -53,7 +69,7 @@ const DataDisplayTable = () => {
   );
 
   return (
-<div className="w-[100%] sm:mr-16">
+    <div className="w-[100%] sm:mr-16">
       <input
         type="text"
         placeholder="ابحث عن طريق الاسم، العدد، الأمر، أو الموديل"
@@ -71,6 +87,14 @@ const DataDisplayTable = () => {
             <th className="bg-[#5c5ee2] text-[#ffffff]">حالة القصه (مكان القصه الحالي)</th>
           </tr>
         </thead>
+        {loading ? (
+             <div className="flex items-center justify-center">
+             <div className="flex items-center">
+               <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+               <div className="ml-4 text-blue-500 text-lg">جارٍ التحميل...</div>
+             </div>
+           </div>
+         ) : (
         <tbody className="bg-[#fdfdfd] border-[3px] border-[#f6202044]">
           {filteredData.map((item, index) => (
             <tr key={index} className="">
@@ -92,8 +116,12 @@ const DataDisplayTable = () => {
             </tr>
           ))}
         </tbody>
+        )}
       </table>
-      </div>
+      {shows && (
+        <DetailsForm orderId={selectedOrder} condition={selectedCondition} showFormdetails={showFormdetails} />
+      )}
+    </div>
   );
 };
 

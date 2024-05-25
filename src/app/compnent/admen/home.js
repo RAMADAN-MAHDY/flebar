@@ -1,16 +1,18 @@
 "use client"
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from "react";
 
 const DataDisplay = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [loading , setloading] = useState(true)
   const fetchData = async () => {
     try {
       const response = await fetch('https://flebarapi-1.onrender.com/condition');
       const result = await response.json();
       setData(result);
+      setloading(false)
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -62,8 +64,18 @@ const DataDisplay = () => {
             <th className="text-[#41ff6d]">الاسم</th>
             <th className="text-[#41ff6d]">العدد</th>
             <th className="bg-[#5c5ee2] text-[#ffffff]">حالة القصه (مكان القصه الحالي)</th>
+        
+          <th className="bg-[#5c5ee2] text-[#ffffff]"> لعرض التفاصيل</th>
           </tr>
         </thead>
+        {loading ? (
+         <div className="flex items-center justify-center">
+         <div className="flex items-center">
+           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+           <div className="ml-4 text-blue-500 text-lg">جارٍ التحميل...</div>
+         </div>
+       </div>
+      ) : (
         <tbody className="bg-[#fdfdfd] border-[3px] border-[#f6202044]">
           {filteredData.map((item, index) => (
             <tr key={index} className="">
@@ -74,9 +86,13 @@ const DataDisplay = () => {
               <td className="text-center border-[2px] border-[#fc2f2f98]">
                {item.condition}
               </td>
+              <td className="text-center border-[2px] border-[#fc2f2f98] h-[50px]">
+               <Link href={`/admin/${item._id}`} className='bg-[#1cb11c] p-3 w-[30px]  h-[20px] rounded-2xl hover:text-[#c09b9b] hover:bg-[#20ff20]' > تفاصيل</Link>
+              </td>
             </tr>
           ))}
         </tbody>
+        )}
       </table>
       </div>
   );
