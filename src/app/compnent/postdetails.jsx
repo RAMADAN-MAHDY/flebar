@@ -17,11 +17,12 @@ const DetailsForm = ({orderId, condition ,showFormdetails}) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "email" : email ,
+           
             "stateDetail": {
               "condition":condition ,
               "number": number,
-              "note": note
+              "note": note,
+              "email" : email
             }
           }
           ),
