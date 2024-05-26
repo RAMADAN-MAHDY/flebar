@@ -8,6 +8,7 @@ const DetailsForm = ({orderId, condition ,showFormdetails}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const email = localStorage.getItem('email');
     try {
         // https://flebarapi-1.onrender.com
       const response = await fetch(`https://flebarapi-1.onrender.com/condition/details/${orderId}`, {
@@ -16,6 +17,7 @@ const DetailsForm = ({orderId, condition ,showFormdetails}) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+            "email" : email ,
             "stateDetail": {
               "condition":condition ,
               "number": number,

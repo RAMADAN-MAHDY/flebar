@@ -1,7 +1,8 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-
+import { format } from 'date-fns';
+import { arDZ } from 'date-fns/locale';
 const Page = ({ params }) => {
     const [dataItems, setDataItems] = useState({});
     const [details, setDetails] = useState({ conditions: [] });
@@ -19,6 +20,7 @@ const Page = ({ params }) => {
                 const response = await fetch(`https://flebarapi-1.onrender.com/condition/details/${params.slug}`);
                 if (!response.ok) throw new Error('Failed to fetch details');
                 const detailsData = await response.json();
+                console.log(detailsData)
                 setDetails(detailsData);
             } catch (err) {
                 setError(err.message);
@@ -55,11 +57,11 @@ const Page = ({ params }) => {
                 </h2>
             </div>
 
-            <div className='flex justify-between'>
-                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">أمر الشغل : {dataItems.order}</h2>
-                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">الموديل : {dataItems.modelnumber}</h2>
-                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">العدد : {dataItems.quantity}</h2>
-                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#1cf11ceb] w-[200px]">الاسم : {dataItems.name}</h2>
+            <div className='flex justify-between '>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#b9dfb9eb] w-[200px]">أمر الشغل : {dataItems.order}</h2>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#b9dfb9eb] w-[200px]">الموديل : {dataItems.modelnumber}</h2>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#b9dfb9eb] w-[200px]">العدد : {dataItems.quantity}</h2>
+                <h2 className="text-[#ff1c1c] rounded-xl pr-4 p-1 text-[24px] bg-[#b9dfb9eb] w-[200px]">الاسم : {dataItems.name}</h2>
             </div>
 
             <table className="bg-[#333333] p-6 w-full sm:w-[97%] md:w-[80%]">
@@ -67,23 +69,38 @@ const Page = ({ params }) => {
                     <tr className="border-2 border-[#f6202044]">
                         <th className="text-[#41ff6d] border-2 border-[#f6202044]">الحاله</th>
                         {condition.map((con, index) => (
-                            <th key={index} className="text-[#ff36e1] border-2 border-[#f6202044]">{con.condition}</th>
+                            <th key={index} className="text-[#d0ff36] border-2 border-[#f6202044]">{con.condition}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody className="bg-[#fdfdfd] border-3 border-[#f6202044]">
                     <tr className="border-2 border-[#f6202044]">
-                        <td className="text-[#41ff6d] border-2 border-[#f6202044]">الاعداد المستلمه</td>
+                        <td className="text-[#41ff6d] border-2 border-[#f6202044] bg-[#111711fe]">الاعداد المستلمه</td>
                         {condition.map((con, index) => (
                             <td key={index} className="text-[#333333] border-2 border-[#f6202044]">{con.number}</td>
                         ))}
                     </tr>
                     <tr className="border-2 border-[#f6202044]">
-                        <td className="text-[#41ff6d] border-2 border-[#f6202044]">الملاحظات</td>
+                        <td className="text-[#41ff6d] border-2 border-[#f6202044] bg-[#111711fe]">الملاحظات</td>
                         {condition.map((con, index) => (
                             <td key={index} className="text-[#333333] border-2 border-[#f6202044]">{con.note}</td>
                         ))}
                     </tr>
+                    <tr className="border-2 border-[#f6202044]">
+                        <td className="text-[#41ff6d] border-2 border-[#f6202044] bg-[#111711fe]">قام بالتغيير</td>
+                        {condition.map((con, index) => (
+                            <td key={index} className="text-[#333333] border-2 border-[#f6202044]">{con.email}</td>
+                        ))}
+                    </tr>
+                  
+<tr className="border-2 border-[#f6202044]">
+    <td className="text-[#41ff6d] border-2 border-[#f6202044] bg-[#111711fe]">وقت اخر تحديث</td>
+    {condition.map((con, index) => (
+        <td key={index} className="text-[#333333] border-2 border-[#f6202044]">
+            {format(new Date(con.timestamp), 'dd/ M ( hh:mm aaa)', { locale: arDZ })}
+        </td>
+    ))}
+</tr>
                 </tbody>
             </table>
         </div>

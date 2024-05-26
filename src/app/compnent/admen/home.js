@@ -1,18 +1,27 @@
-"use client"
+import { useEffect, useState } from "react";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from "react";
 
 const DataDisplay = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading , setloading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [serverDataLoaded, setServerDataLoaded] = useState(false);
+
   const fetchData = async () => {
     try {
+      setLoading(true);
+      const localData = localStorage.getItem("data");
+      if (localData) {
+        setData(JSON.parse(localData));
+        setLoading(false);
+      }
       const response = await fetch('https://flebarapi-1.onrender.com/condition');
       const result = await response.json();
       setData(result);
-      setloading(false)
+      setLoading(false);
+      setServerDataLoaded(true);
+      localStorage.setItem("data", JSON.stringify(result));
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -34,8 +43,8 @@ const DataDisplay = () => {
   );
 
   return (
-<div className="w-[100%]">
-<div className="flex items-center justify-center w-full p-4 relative">
+    <div className="w-[100%]">
+      <div className="flex items-center justify-center w-full p-4 relative">
         <Image 
           src="/_b7fd5155-f3a6-45ca-a6cf-fb02bffefcb3.jpeg" 
           alt="flebar logo" 
@@ -47,7 +56,8 @@ const DataDisplay = () => {
           بسم الله الرحمن الرحيم
         </h2>
       </div>
-<input
+
+      <input
         type="text"
         placeholder="ابحث عن طريق الاسم، العدد، الأمر، أو الموديل"
         value={searchQuery}
@@ -55,7 +65,6 @@ const DataDisplay = () => {
         className="mb-2 p-2 border  border-gray-400 rounded-lg md:mr-[40%]"
       />
 
-    
       <table className="bg-[#3333] p-6 w-[100%] sm:w-[97%] md:w-[80%]">
         <thead className="bg-[#444444fa]">
           <tr className="border-[2px] border-[#f6202044]">
@@ -64,37 +73,32 @@ const DataDisplay = () => {
             <th className="text-[#41ff6d]">الاسم</th>
             <th className="text-[#41ff6d]">العدد</th>
             <th className="bg-[#5c5ee2] text-[#ffffff]">حالة القصه (مكان القصه الحالي)</th>
-        
-          <th className="bg-[#5c5ee2] text-[#ffffff]"> لعرض التفاصيل</th>
+            <th className="bg-[#5c5ee2] text-[#ffffff]">لعرض التفاصيل</th>
           </tr>
         </thead>
-        {loading ? (
-         <div className="flex items-center justify-center">
-         <div className="flex items-center">
-           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-           <div className="ml-4 text-blue-500 text-lg">جارٍ التحميل...</div>
-         </div>
-       </div>
-      ) : (
+
         <tbody className="bg-[#fdfdfd] border-[3px] border-[#f6202044]">
-          {filteredData.map((item, index) => (
-            <tr key={index} className="">
-              <td className="bg-[#9aa31e] text-center text-[#fff] border-[1px] border-[#d1252579]">{item.order}</td>
-              <td className="text-center border-[2px] border-[#d24e4e80]">{item.modelnumber}</td>
-              <td className="text-center border-[2px] border-[#d118185f]">{item.name}</td>
-              <td className="text-center border-[2px] border-[#f6202044]">{item.quantity}</td>
-              <td className="text-center border-[2px] border-[#fc2f2f98]">
-               {item.condition}
-              </td>
-              <td className="text-center border-[2px] border-[#fc2f2f98] h-[50px]">
-               <Link href={`/admin/${item._id}`} className='bg-[#1cb11c] p-3 w-[30px]  h-[20px] rounded-2xl hover:text-[#c09b9b] hover:bg-[#20ff20]' > تفاصيل</Link>
-              </td>
+          {loading && !serverDataLoaded ? (
+            <tr>
+              <td colSpan="6" className="text-center">جارٍ التحميل...</td>
             </tr>
-          ))}
+          ) : (
+            filteredData.map((item, index) => (
+              <tr key={index}>
+                <td className="bg-[#9aa31e] text-center text-[#fff] border-[1px] border-[#d1252579]">{item.order}</td>
+                <td className="text-center border-[2px] border-[#d24e4e80]">{item.modelnumber}</td>
+                <td className="text-center border-[2px] border-[#d118185f]">{item.name}</td>
+                <td className="text-center border-[2px] border-[#f6202044]">{item.quantity}</td>
+                <td className="text-center border-[2px] border-[#fc2f2f98]">{item.condition}</td>
+                <td className="h-[50px] text-center border-[2px] border-[#fc2f2f98]">
+                  <Link href={`/admin/${item._id}`} className='bg-[#1cb11c] p-3 w-[30px] h-[40px] rounded-2xl hover:text-[#c09b9b] hover:bg-[#20ff20]'>تفاصيل</Link>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
-        )}
       </table>
-      </div>
+    </div>
   );
 };
 
