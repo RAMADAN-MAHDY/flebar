@@ -57,7 +57,7 @@ const DetailsForm = ({orderId, condition ,showFormdetails}) => {
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           required
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-2 border border-gray-300 rounded text-[#000]"
         />
       </div>
       <div className="mt-2">
@@ -67,7 +67,7 @@ const DetailsForm = ({orderId, condition ,showFormdetails}) => {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           required
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-2 border border-gray-300 rounded text-[#000]"
         />
       </div>
       <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">حفظ</button>
