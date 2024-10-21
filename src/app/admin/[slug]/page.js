@@ -12,12 +12,12 @@ const Page = ({ params }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(`https://flebarapi-1.onrender.com/condition/${params.slug}`);
+                const res = await fetch(`https://flebarapi.vercel.app/condition/${params.slug}`);
                 if (!res.ok) throw new Error('Failed to fetch data items');
                 const data = await res.json();
                 setDataItems(data);
 
-                const response = await fetch(`https://flebarapi-1.onrender.com/condition/details/${params.slug}`);
+                const response = await fetch(`https://flebarapi.vercel.app/condition/details/${params.slug}`);
                 if (!response.ok) throw new Error('Failed to fetch details');
                 const detailsData = await response.json();
                 console.log(detailsData)

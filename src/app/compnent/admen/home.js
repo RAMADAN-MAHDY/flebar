@@ -16,7 +16,7 @@ const DataDisplay = () => {
         setData(JSON.parse(localData));
         setLoading(false);
       }
-      const response = await fetch('https://flebarapi-1.onrender.com/condition');
+      const response = await fetch('https://flebarapi.vercel.app/condition');
       const result = await response.json();
       setData(result);
       setLoading(false);

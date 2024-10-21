@@ -12,7 +12,7 @@ const LoginForm = ({getkey}) => {
     setError("");
 
     try {
-      const response = await fetch('https://flebarapi-1.onrender.com/login', {
+      const response = await fetch('https://flebarapi.vercel.app/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
